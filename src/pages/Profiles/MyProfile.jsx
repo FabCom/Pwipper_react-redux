@@ -5,21 +5,21 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { getUser } from "../../actions/user.action";
 import Cookies from 'js-cookie'
-import { useNavigate } from "react-router-dom";
 
 const MyProfile = () => {
 
   const user = useSelector((state) => state.userReducer)
-  console.log(user)
+  
   const dispatch = useDispatch()
   const [errorsForm, setErrorsForm] = useState([])
-  let navigate = useNavigate()
 
-  let username = ''
-  let email = ''
-  let description = ''
-  let jwt = ''
-  let id = null
+
+   let username = ''
+   let email = ''
+   let description = ''
+   let jwt = ''
+   let id = null
+
 
   if (user) {
     username = user.user.username
@@ -27,7 +27,7 @@ const MyProfile = () => {
     description = user.user.description
     jwt = user.jwt
     id = user.user.id
-  }
+  } 
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -38,7 +38,7 @@ const MyProfile = () => {
       description: dataForm.get('description'),
     
     };
-    console.log(dataUserConnexion)
+    // console.log(dataUserConnexion)
     const url = 'http://localhost:1337/users/' + id
 
     fetch( url, {
@@ -54,7 +54,6 @@ const MyProfile = () => {
       if (response.jwt) {
         Cookies.set('user', JSON.stringify(response),{ sameSite: 'strict', expires: 365 })
         dispatch(getUser())
-        navigate('/') 
       } else {
         response.message.map(messages => messages.messages.map(message => setErrorsForm([message.message])))
       }
